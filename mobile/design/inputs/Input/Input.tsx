@@ -44,14 +44,14 @@ export const Input = memo(function Input({
 }: InputComponentProps) {
   const theme = useThemeContext()
   const backgroundColor = useMemo(() => {
-    if (!bg) return theme.inputBg
+    if (!bg) return theme.bgAlt
     if (bg in theme) {
       return theme[bg as ThemeColors]
     }
     if (bg in colors) {
       return colors[bg as Colors]
     }
-    return theme.inputBg
+    return theme.bgAlt
   }, [bg, theme])
 
   const color = useMemo(() => {

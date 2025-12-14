@@ -8,7 +8,7 @@ type ScreenProps = {
   children: React.ReactNode
 }
 
-export const Screen = memo(function Screen({ safeArea = true, children }: ScreenProps) {
+export const Screen = memo(function Screen({ safeArea, children }: ScreenProps) {
   if (safeArea) {
     return (
       <VStack bg="bg" flexGrow={1}>
