@@ -1,15 +1,15 @@
-import useSessionContext from "@/context/Session/useSessionContext";
-import { AppMutation } from "@/gql/AppMutation.graphql";
-import { AppQuery } from "@/gql/AppQuery.graphql";
-import { authService } from "@/lib/auth";
-import { router } from "expo-router";
-import React, { useCallback } from "react";
-import { Text, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { graphql, useLazyLoadQuery, useMutation } from "react-relay";
+import useSessionContext from '@/context/Session/useSessionContext'
+import { Screen } from '@/design/layout'
+import { AppMutation } from '@/gql/AppMutation.graphql'
+import { AppQuery } from '@/gql/AppQuery.graphql'
+import { authService } from '@/lib/auth'
+import { router } from 'expo-router'
+import { useCallback } from 'react'
+import { Text, TouchableOpacity } from 'react-native'
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay'
 
 export default function Index() {
-  const { setHasSession } = useSessionContext();
+  const { setHasSession } = useSessionContext()
 
   const { me } = useLazyLoadQuery<AppQuery>(
     graphql`
@@ -21,35 +21,35 @@ export default function Index() {
       }
     `,
     {}
-  );
+  )
 
   const [commitLogout, isInFlight] = useMutation<AppMutation>(graphql`
     mutation AppMutation {
       logout
     }
-  `);
+  `)
   const onLogout = useCallback(() => {
     commitLogout({
       variables: {},
       onCompleted: (response, err) => {
-        if (err) return;
+        if (err) return
 
         const logoutFn = async () => {
-          await authService.clearSession();
-          setHasSession(false);
-          router.replace("/join");
-        };
+          await authService.clearSession()
+          setHasSession(false)
+          router.replace('/join')
+        }
 
         if (response.logout) {
-          logoutFn();
+          logoutFn()
         } else {
-          console.error("unsuccessful logout from Backend");
+          console.error('unsuccessful logout from Backend')
         }
       },
-    });
-  }, [commitLogout, setHasSession]);
+    })
+  }, [commitLogout, setHasSession])
   return (
-    <SafeAreaView>
+    <Screen>
       <Text>{me?.id}</Text>
       <Text>{me?.email}</Text>
 
@@ -57,13 +57,13 @@ export default function Index() {
         style={{
           padding: 10,
           margin: 40,
-          backgroundColor: "red",
+          backgroundColor: 'red',
           width: 100,
         }}
         onPress={onLogout}
       >
         <Text>Logout</Text>
       </TouchableOpacity>
-    </SafeAreaView>
-  );
+    </Screen>
+  )
 }
